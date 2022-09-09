@@ -1,0 +1,10 @@
+.button {
+    font-family: Inter, Helvetica, sans-serif;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    color: #FFF;
+    font-size: 16px;
+    background-color: #4D5B9E;
+    cursor: pointer;
+  }

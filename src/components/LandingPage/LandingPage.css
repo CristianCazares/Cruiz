@@ -1,0 +1,10 @@
+.start-button {
+  font-family: Inter, Helvetica, sans-serif;
+  padding: 24px;
+  border-radius: 20px;
+  border: none;
+  color: #FFF;
+  font-size: 16px;
+  background-color: #4D5B9E;
+  cursor: pointer;
+}
