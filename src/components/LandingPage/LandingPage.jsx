@@ -11,7 +11,7 @@ const LandingPage = (props) => {
       <button
         className='start-button'
         onClick={props.handleClick}
-      >
+        >
         Start a quiz
       </button>
     </div>

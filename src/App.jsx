@@ -17,10 +17,11 @@ function App() {
   return (
     <div className="App">
       {quizStart ?
-        <Quiz /> :
-        <LandingPage 
-        handleClick={startAQuiz} 
-        back={back}
+        <Quiz
+          back={back}
+        /> :
+        <LandingPage
+          handleClick={startAQuiz}
         />}
     </div>
   )

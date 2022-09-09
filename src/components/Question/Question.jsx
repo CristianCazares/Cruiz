@@ -1,16 +1,17 @@
 import React from 'react'
-import Answer from '../Answer'
+import './Question.css'
 const Question = (props) => {
   const options = props.options.map((option, i) =>
     <button
       className='question-option'
       key={`Opt${i}`}
+      onClick={props.handleClick}
     >
       {option}
     </button>
   )
   return (
-    <div>
+    <div className='question'>
       <div
         className='question-category'
       >
