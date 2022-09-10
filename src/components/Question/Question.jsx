@@ -1,9 +1,15 @@
 import React from 'react'
 import './Question.css'
 const Question = (props) => {
+
   const options = props.options.map((option, i) =>
     <button
-      className='question-option'
+      id={`${props.id}O${i}`}
+      className={`question-option ${
+        i == props.selection ?
+        "selected" :
+        ""
+      }`}
       key={`Opt${i}`}
       onClick={props.handleClick}
     >
@@ -11,7 +17,7 @@ const Question = (props) => {
     </button>
   )
   return (
-    <div className='question'>
+    <div className='question' id={props.id}>
       <div
         className='question-category'
       >

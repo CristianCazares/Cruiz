@@ -11,15 +11,17 @@ const Quiz = (props) => {
       setLoading(true)
       await fetch("https://opentdb.com/api.php?amount=10")
         .then((res) => res.json())
-        .then((data) => { 
+        .then((data) => {
           let q = []
-          data.results.forEach(item => {
+          data.results.forEach((item, i) => {
             q.push({
               ...item,
-              selection: ""
+              options: [...item.incorrect_answers, item.correct_answer],
+              selection: undefined,
+              id: i
             })
           });
-          setQuestions(q) 
+          setQuestions(q)
         })
         .finally(() => { setLoading(false) })
     }
@@ -28,6 +30,20 @@ const Quiz = (props) => {
   }, [])
 
   const selectOption = (e) => {
+    const id = e.target.id
+    const qid = id[1]
+    const oid = id[3]
+    setQuestions(prevQuestions => {
+      let newQuestions = []
+      prevQuestions.forEach(question => {
+        let currentQuestion = question
+        if (question.id == qid) {
+          currentQuestion.selection = oid
+        }
+        newQuestions.push(currentQuestion)
+      })
+      return newQuestions
+    })
   }
 
   const questionElements = questions.map((question, i) => {
@@ -35,14 +51,21 @@ const Quiz = (props) => {
     return (
       <Question
         key={`Q${i}`}
+        id={`Q${i}`}
         category={question.category}
         question={question.question}
         options={options}
         correct={question.correct_answer}
         handleClick={(e) => selectOption(e)}
+        selection={question.selection}
       />
     )
   })
+
+  const handleClickBack = () => {
+    setQuestions([])
+    props.back()
+  }
 
   return (
     <div className='questions-container'>
@@ -58,7 +81,7 @@ const Quiz = (props) => {
           <div className='buttons'>
             <button
               className='button'
-              onClick={props.back}
+              onClick={handleClickBack}
             >
               Back
             </button>
