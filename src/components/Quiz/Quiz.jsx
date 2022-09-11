@@ -33,10 +33,13 @@ const Quiz = (props) => {
     const id = e.target.id
     const qid = parseInt(id[1])
     const oid = parseInt(id[3])
-    const prevQuestions = questions
-    console.log("prev: ", prevQuestions[qid])
-    prevQuestions[qid].selection = oid
-    console.log("new: ", prevQuestions[qid])
+    const prevQuestions = []
+    questions.forEach(q => prevQuestions.push(q))
+    if (prevQuestions[qid].selection === oid) {
+      prevQuestions[qid].selection = undefined
+    } else {
+      prevQuestions[qid].selection = oid
+    }
     setQuestions(prevQuestions)
   }
 

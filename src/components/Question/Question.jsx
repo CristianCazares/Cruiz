@@ -1,7 +1,6 @@
 import React from 'react'
 import './Question.css'
 const Question = (props) => {
-  console.log(props)
   const options = props.options.map((option, i) =>
     <button
       id={`${props.id}O${i}`}
