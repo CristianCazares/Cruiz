@@ -31,46 +31,24 @@ const Quiz = (props) => {
 
   const selectOption = (e) => {
     const id = e.target.id
-    const qid = id[1]
-    const oid = id[3]
-    setQuestions(prevQuestions => {
-      let newQuestions = []
-      prevQuestions.forEach(question => {
-        let currentQuestion = question
-        if (question.id == qid) {
-          currentQuestion.selection = oid
-        }
-        newQuestions.push(currentQuestion)
-      })
-      return newQuestions
-    })
+    const qid = parseInt(id[1])
+    const oid = parseInt(id[3])
+    const prevQuestions = questions
+    console.log("prev: ", prevQuestions[qid])
+    prevQuestions[qid].selection = oid
+    console.log("new: ", prevQuestions[qid])
+    setQuestions(prevQuestions)
   }
 
   const checkAnswers = () => {
     questions.forEach(question => {
-      if (question.options[question.selection] === question.correct_answer){
+      if (question.options[question.selection] === question.correct_answer) {
         console.log("Correct")
-      }else{
+      } else {
         console.log("Incorrect");
       }
     })
   }
-
-  const questionElements = questions.map((question, i) => {
-    const options = [...question.incorrect_answers, question.correct_answer]
-    return (
-      <Question
-        key={`Q${i}`}
-        id={`Q${i}`}
-        category={question.category}
-        question={question.question}
-        options={options}
-        correct={question.correct_answer}
-        handleClick={(e) => selectOption(e)}
-        selection={question.selection}
-      />
-    )
-  })
 
   const handleClickBack = () => {
     setQuestions([])
@@ -86,7 +64,21 @@ const Quiz = (props) => {
 
         <>
           <h1>Quiz</h1>
-          {questionElements}
+          {questions.map((question, i) => {
+            const options = [...question.incorrect_answers, question.correct_answer]
+            return (
+              <Question
+                key={`Q${i}`}
+                id={`Q${i}`}
+                category={question.category}
+                question={question.question}
+                options={options}
+                correct={question.correct_answer}
+                handleClick={(e) => selectOption(e)}
+                selection={question.selection}
+              />
+            )
+          })}
 
           <div className='buttons'>
             <button
