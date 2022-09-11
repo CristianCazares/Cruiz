@@ -46,6 +46,16 @@ const Quiz = (props) => {
     })
   }
 
+  const checkAnswers = () => {
+    questions.forEach(question => {
+      if (question.options[question.selection] === question.correct_answer){
+        console.log("Correct")
+      }else{
+        console.log("Incorrect");
+      }
+    })
+  }
+
   const questionElements = questions.map((question, i) => {
     const options = [...question.incorrect_answers, question.correct_answer]
     return (
@@ -87,6 +97,7 @@ const Quiz = (props) => {
             </button>
             <button
               className='button right'
+              onClick={checkAnswers}
             >
               Check answers
             </button>
