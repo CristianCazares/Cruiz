@@ -1,6 +1,7 @@
 .question {
     margin-bottom: 24px;
 }
+
 .question-question {
     font-weight: 800;
 }
@@ -22,4 +23,23 @@
 .selected {
     outline: solid #D6DBF5;
     background-color: #D6DBF5;
+}
+
+.disabled {
+    outline: solid #9c9c9c;
+    background-color: #F5F7FB;
+    color: #9c9c9c;
+    cursor: no-drop;
+}
+
+.incorrect {
+    color: #9c9c9c;
+    outline: solid #F8BCBC;
+    background-color: #F8BCBC;
+}
+
+.correct {
+    outline: solid #94D7A2;
+    color: #293264;
+    background-color: #94D7A2;
 }

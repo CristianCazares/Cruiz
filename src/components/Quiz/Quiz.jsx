@@ -5,6 +5,7 @@ import "./Quiz.css"
 const Quiz = (props) => {
   const [questions, setQuestions] = useState([])
   const [loading, setLoading] = useState([])
+  const [check, setCheck] = useState(false)
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -15,12 +16,12 @@ const Quiz = (props) => {
           let q = []
           data.results.forEach((item, i) => {
             q.push({
+              id: i,
               ...item,
               options: [...item.incorrect_answers, item.correct_answer],
               selection: undefined,
-              id: i
             })
-          });
+          })
           setQuestions(q)
         })
         .finally(() => { setLoading(false) })
@@ -29,28 +30,51 @@ const Quiz = (props) => {
     getQuestions()
   }, [])
 
+
   const selectOption = (e) => {
-    const id = e.target.id
-    const qid = parseInt(id[1])
-    const oid = parseInt(id[3])
+    const id = e.target.id //Full id of an option: QXOJ. Where X = id question and J = id option
+    const qid = parseInt(id[1]) //Only question id
+    const oid = parseInt(id[3]) //Only option id
     const prevQuestions = []
+    //Copy all the questions to have different
+    // refference so the state actually changes
     questions.forEach(q => prevQuestions.push(q))
-    if (prevQuestions[qid].selection === oid) {
-      prevQuestions[qid].selection = undefined
-    } else {
-      prevQuestions[qid].selection = oid
-    }
+
+    //If the selection of a certain question ID
+    prevQuestions[qid].selection =
+      prevQuestions[qid].selection === oid ?
+        undefined :
+        oid
+
     setQuestions(prevQuestions)
   }
 
+  const questionsElements = questions.map((question, i) => {
+    const options = [...question.incorrect_answers, question.correct_answer]
+    return (
+      <Question
+        key={`Q${i}`}
+        id={`Q${i}`}
+        category={question.category}
+        question={question.question}
+        options={options}
+        correct={question.correct_answer}
+        handleClick={(e) => selectOption(e)}
+        selection={question.selection}
+        isCorrect={question.isCorrect}
+        isChecked={check}
+      />
+    )
+  })
+
   const checkAnswers = () => {
-    questions.forEach(question => {
-      if (question.options[question.selection] === question.correct_answer) {
-        console.log("Correct")
-      } else {
-        console.log("Incorrect");
+    setQuestions(prevQuestions => prevQuestions.map(question => {
+      return {
+        ...question,
+        isCorrect: question.options[question.selection] === question.correct_answer
       }
-    })
+    }))
+    setCheck(true)
   }
 
   const handleClickBack = () => {
@@ -67,21 +91,7 @@ const Quiz = (props) => {
 
         <>
           <h1>Quiz</h1>
-          {questions.map((question, i) => {
-            const options = [...question.incorrect_answers, question.correct_answer]
-            return (
-              <Question
-                key={`Q${i}`}
-                id={`Q${i}`}
-                category={question.category}
-                question={question.question}
-                options={options}
-                correct={question.correct_answer}
-                handleClick={(e) => selectOption(e)}
-                selection={question.selection}
-              />
-            )
-          })}
+          {questionsElements}
 
           <div className='buttons'>
             <button
