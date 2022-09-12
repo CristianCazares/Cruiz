@@ -18,7 +18,7 @@ const Quiz = (props) => {
             q.push({
               id: i,
               ...item,
-              options: [...item.incorrect_answers, item.correct_answer],
+              options: randomSort([...item.incorrect_answers, item.correct_answer]),
               selection: undefined,
             })
           })
@@ -49,15 +49,24 @@ const Quiz = (props) => {
     setQuestions(prevQuestions)
   }
 
+  function randomSort(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const random = Math.ceil(Math.random() * i)
+      const k = arr[i]
+      arr[i] = arr[random]
+      arr[random] = k
+    }
+    return arr
+  }
+
   const questionsElements = questions.map((question, i) => {
-    const options = [...question.incorrect_answers, question.correct_answer]
     return (
       <Question
         key={`Q${i}`}
         id={`Q${i}`}
         category={question.category}
         question={question.question}
-        options={options}
+        options={question.options}
         correct={question.correct_answer}
         handleClick={(e) => selectOption(e)}
         selection={question.selection}
