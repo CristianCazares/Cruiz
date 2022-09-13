@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Question from '../Question/Question'
 import "./Quiz.css"
-
+import {decode} from 'html-entities'
 const Quiz = (props) => {
   const [questions, setQuestions] = useState([])
   const [loading, setLoading] = useState([])
@@ -18,7 +18,10 @@ const Quiz = (props) => {
             q.push({
               id: i,
               ...item,
-              options: randomSort([...item.incorrect_answers, item.correct_answer]),
+              correct_answer: decode(item.correct_answer),
+              incorrect_answers: item.incorrect_answers.map(ans => decode(ans)),
+              question: decode(item.question),
+              options: randomSort([...item.incorrect_answers, item.correct_answer]).map(o => decode(o)),
               selection: undefined,
             })
           })
@@ -26,7 +29,6 @@ const Quiz = (props) => {
         })
         .finally(() => { setLoading(false) })
     }
-
     getQuestions()
   }, [])
 
